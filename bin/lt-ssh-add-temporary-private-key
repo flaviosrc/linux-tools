@@ -13,7 +13,7 @@ echo "
 
 tmp=$(mktemp) && chmod 600 "$tmp"
 
-echo "Cole o conteúdo da chave privada aqui e termine pressionando Ctrl‑D"
+echo "Cole o conteúdo da chave privada aqui e termine pressionando Ctrl+D"
 cat > "$tmp"
 
 ssh-add -t 1h "$tmp" || { echo "[ERROR] falha ao carregar a chave privada"; exit 1; }

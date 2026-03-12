@@ -1,0 +1,45 @@
+#!/bin/bash
+
+echo "[INFO] script para adicionar chave privada permanente"
+
+read -p "Usuário do host (ex: flaviosrc): " host_user
+read -p "Endereço do host (ex: github.com): " host_address
+read -p "Apelido do host (auto: $host_user.$host_address): " host_alias
+host_alias="${host_alias:-$host_user.$host_address}"
+
+read -p "Porta do host (padrão: 22): " host_port
+host_port="${host_port:-22}"
+
+key_path="$HOME/.ssh/id_${host_alias//./_}"
+
+new_config="Host $host_alias
+	HostName $host_address
+	User $host_user
+	Port $host_port
+	IdentityFile $key_path"
+
+echo "Resumo da operação:
+Nova config no ~/.ssh/config:
+$new_config"
+
+read -p "Deseja continuar? (s/n) " confirm
+if [ "$confirm" != "s" ]; then
+	echo "Operação cancelada!"
+	exit 0
+fi
+
+echo "Adicionando nova configuração ao ~/.ssh/config..."
+mkdir -p "$HOME/.ssh"
+[ ! -e "$HOME/.ssh/config" ] && touch "$HOME/.ssh/config"
+
+echo -e "\n$new_config\n" >> "$HOME/.ssh/config"
+
+echo "Adicionando chave privada ao ssh-agent..."
+[ ! -e $key_path ] && touch $key_path && chmod 600 $key_path
+
+echo "Cole o conteúdo da chave privada aqui e termine pressionando Ctrl+D"
+cat > $key_path
+
+ssh-add $key_path || { echo "[ERROR] falha ao carregar a chave privada"; exit 1; }
+
+exit 0
