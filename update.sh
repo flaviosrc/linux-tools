@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-REPO_DIR="$HOME/.linux-tools"
+read -p "Local de instalação do Linux Tools (padrão: $HOME/.linux-tools): " install_dir
+install_dir="${install_dir:-$HOME/.linux-tools}"
 
-cd "$REPO_DIR"
+cd $install_dir
 
 git pull
 

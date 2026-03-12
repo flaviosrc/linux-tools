@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Digite a chave privada que deseja importar (em formato ASCII-armored, incluindo as linhas -----BEGIN PGP PRIVATE KEY BLOCK----- e -----END PGP PRIVATE KEY BLOCK-----) e pressione Ctrl + D:"
+gpg --import

@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "exemplo de chave para assinar commits do git:"
+echo "Tipo: RSA (epanas para assinar)"
+echo "Expiração: sem expiração"
+echo "Nome verdadeiro: John Doe"
+echo "Email: john.doe@example.com (endereço de email associado a conta do github)"
+gpg --full-generate-key

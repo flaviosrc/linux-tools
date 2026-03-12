@@ -1,0 +1,7 @@
+#!/bin/bash
+
+gpg --list-secret-keys --keyid-format=long
+
+echo "Digite o ID da chave privada que deseja exportar (ex: 8D4E42E69D6AEEDB):"
+read key_id
+gpg --armor --export-secret-keys $key_id
