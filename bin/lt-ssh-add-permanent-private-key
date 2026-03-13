@@ -2,21 +2,32 @@
 
 echo "[INFO] script para adicionar chave privada permanente"
 
-read -p "Usuário do host (ex: flaviosrc): " host_user
-read -p "Endereço do host (ex: github.com): " host_address
-read -p "Apelido do host (auto: $host_user.$host_address): " host_alias
-host_alias="${host_alias:-$host_user.$host_address}"
+read -p "Modo de configuração — [1] Host alias (padrão, GitHub/múltiplas contas) / [2] Match Host+User (servidores com usuários distintos): " mode
+mode="${mode:-1}"
 
-read -p "Porta do host (padrão: 22): " host_port
-host_port="${host_port:-22}"
+read -p "Usuário do host (ex: git, alice): " host_user
+read -p "Endereço do host (ex: github.com, myserver.com): " host_address
 
-key_path="$HOME/.ssh/id_${host_alias//./_}"
+if [ "$mode" = "2" ]; then
+	key_path="$HOME/.ssh/id_${host_address//./_}_${host_user}"
 
-new_config="Host $host_alias
+	new_config="Match Host $host_address User $host_user
+	IdentityFile $key_path"
+else
+	read -p "Apelido do host (auto: $host_user.$host_address): " host_alias
+	host_alias="${host_alias:-$host_user.$host_address}"
+
+	read -p "Porta do host (padrão: 22): " host_port
+	host_port="${host_port:-22}"
+
+	key_path="$HOME/.ssh/id_${host_alias//./_}"
+
+	new_config="Host $host_alias
 	HostName $host_address
 	User $host_user
 	Port $host_port
 	IdentityFile $key_path"
+fi
 
 echo "Resumo da operação:
 Nova config no ~/.ssh/config:

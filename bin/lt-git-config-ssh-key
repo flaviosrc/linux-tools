@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "[INFO] configura chave SSH para este repositório git via core.sshCommand"
+
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+	echo "[ERROR] não é um repositório git"
+	exit 1
+fi
+
+read -p "Caminho da chave privada (ex: ~/.ssh/id_flaviosrc): " key_path
+key_path="${key_path/#\~/$HOME}"
+
+if [ ! -f "$key_path" ]; then
+	echo "[ERROR] arquivo não encontrado: $key_path"
+	exit 1
+fi
+
+git config core.sshCommand "ssh -i $key_path -o IdentitiesOnly=yes"
+echo "[INFO] core.sshCommand configurado para usar $key_path neste repositório"
+
+exit 0
