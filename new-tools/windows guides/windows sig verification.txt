@@ -1,0 +1,2 @@
+
+Get-AuthenticodeSignature -FilePath "C:\Users\lourenco\Downloads\npp.8.8.2.Installer.x64.exe"

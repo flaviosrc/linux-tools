@@ -1,0 +1,42 @@
+lab01
+current usage: wifi network router
+os: debian 13.0.0 netinst
+resources: 2 cores, 2GB ram, 20GB disk
+nic: br0, wifi
+
+lab02
+current usage: for live os only 
+os: tails or kali
+resources: 2 cores, 4GB ram, no disk
+nic: br0
+
+lab03
+current usage:  
+os: debian 13.0.0 netinst
+resources: 2 cores, 2GB ram, 20GB disk
+nic: br0
+
+lab04
+current usage:  
+os: debian 13.1.0 netinst
+resources: 4 cores, 8GB ram, 30GB disk encrypted
+nic: br0
+
+lab06
+
+
+host02
+endereço 10.0.0.10
+usuario: remoto
+senha: remoto
+usuario: super
+senha: super
+
+host03
+endereço 10.0.0.11
+usuario: remoto
+senha: remoto
+usuario: super
+senha: super
+
+

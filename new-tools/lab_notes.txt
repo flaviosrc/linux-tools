@@ -1,0 +1,11 @@
+Anotações
+
+1. para tabela de partições atualmente se o GPT.
+
+2. para boot do tipo UEFI (não legacy) é obrigatório a partição do tipo boot fat32 montada no caminho /boot/efi.
+
+3. memória swap não é obrigatório e pode ser tanto uma partição do tipo swap como um arquivo /swapfile.
+
+4. para ter mais de uma SO na mesma máquina é recomendável que cada sistema tenha sua própria partição EFI com seu próprio bootloader instalado, por mais que seja possivel fazer boot de vários SO usando mesmo bootloader, não recomendo por imcompatibilidade de versões e configurações.
+
+5. para sistemas totalmente criptografados, a partição efi(/boot/efi) e boot(/boot) são obrigatórias e não podem ser criptografadas, uma partição swap é conveniente para possibilitar a ibernação do SO, porém, quando ibernar o sistema, tudo que está em execução ficara exposto em um lugar não criptografado.

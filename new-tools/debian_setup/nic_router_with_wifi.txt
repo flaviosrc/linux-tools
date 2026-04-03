@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "Instructions on how to easely route a subnet with dhcp/dns server with 1 click using debian with gnome
+
+open Gnome Settings>Network>Wired Network options>IPv4.
+change IPv4 Method to 'Shared to other ccomputers'.
+
+now your computer will route a new network to your NIC
+to have internet access in this new network routed by your pc, you will need 
+another NIC with internet conection, using wifi will automatically transmite 
+internet to your NIC and every device connected to it."
