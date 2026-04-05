@@ -2,11 +2,8 @@
 
 set -euo pipefail
 
-read -p "Local de instalação do Linux Tools (padrão: $HOME/.linux-tools): " install_dir
-install_dir="${install_dir:-$HOME/.linux-tools}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd $install_dir
+git -C "$SCRIPT_DIR" pull
 
-git pull
-
-bash install.sh
+bash "$SCRIPT_DIR/install.sh"

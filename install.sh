@@ -2,29 +2,19 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 INSTALL_DIR="$HOME/.local/bin"
 LIB_DIR="$HOME/.local/lib/linux-tools"
 CONFIG_DIR="$HOME/.config/linux-tools"
 
-read -p "Local de instalação do Linux Tools (padrão: $HOME/.linux-tools): " install_dir
-install_dir="${install_dir:-$HOME/.linux-tools}"
+mkdir -p "$INSTALL_DIR" "$LIB_DIR" "$CONFIG_DIR"
 
-git status $install_dir >/dev/null 2>&1 || git clone https://github.com/flaviosrc/linux-tools.git $install_dir
+cp "$SCRIPT_DIR"/bin/* "$INSTALL_DIR/"
+chmod +x "$INSTALL_DIR"/lt-*
 
-cd $install_dir
-
-mkdir -p "$INSTALL_DIR"
-mkdir -p "$LIB_DIR"
-mkdir -p "$CONFIG_DIR"
-
-cp bin/* "$INSTALL_DIR/"
-
-chmod +x "$INSTALL_DIR"/*
-
-cp lib/* "$LIB_DIR/"
-
-cp -n config/* "$CONFIG_DIR/" 2>/dev/null || true
+cp "$SCRIPT_DIR"/lib/* "$LIB_DIR/"
+cp -n "$SCRIPT_DIR"/config/* "$CONFIG_DIR/" 2>/dev/null || true
 
 echo "Instalação concluída"
 echo "Certifique-se que ~/.local/bin está no PATH"
-echo "$ echo "PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc"
+echo "$ echo \"PATH=\$PATH:\$HOME/.local/bin\" >> ~/.bashrc"

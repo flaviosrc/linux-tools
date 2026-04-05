@@ -13,6 +13,8 @@ Planned tool categories include: Git config, GPG keys, SSH keys, SSH server setu
 ## Installation & Lifecycle
 
 ```bash
+git clone https://github.com/flaviosrc/linux-tools.git
+cd linux-tools
 bash install.sh     # copies bin/* → ~/.local/bin, lib/* → ~/.local/lib/linux-tools, config/* → ~/.config/linux-tools
 bash update.sh      # git pull + re-runs install.sh
 bash uninstall.sh   # removes all lt-* binaries and installed lib/config dirs
