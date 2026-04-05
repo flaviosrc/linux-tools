@@ -3,6 +3,16 @@
 # ex. lt-backup-secure-copy /mnt/storage/ /mnt/backup/
 # com "/" no final copia todo o conteudo dentro do diretório
 
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "[ERROR] Uso: lt-backup-secure-copy <ORIGEM_DIR> <DESTINO_DIR> [parametros rsync]"
+  exit 1
+fi
+
+if ! command -v rsync &>/dev/null; then
+  echo "[ERROR] rsync não encontrado. Instale com: apt install rsync"
+  exit 1
+fi
+
 PATH_ATUAL=$(pwd)
 
 ORIGEM_DIR=$1
