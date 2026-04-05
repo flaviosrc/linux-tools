@@ -1,0 +1,88 @@
+#!/bin/bash
+
+BEGIN_MARKER="# BEGIN lt-alert-ssh-new-connection"
+END_MARKER="# END lt-alert-ssh-new-connection"
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Error: this script must be run as root" >&2
+    exit 1
+fi
+
+if ! command -v curl > /dev/null 2>&1; then
+    echo "Error: curl is required but not installed" >&2
+    exit 1
+fi
+
+
+if grep -qF "$BEGIN_MARKER" /etc/profile; then
+    echo "Current SSH alert configuration:"
+    echo "---"
+    grep -A 10 -F "$BEGIN_MARKER" /etc/profile | grep -B 10 -F "$END_MARKER"
+    echo "---"
+    read -rp "Update configuration? [y/N]: " ANSWER
+    [[ "$ANSWER" != "y" && "$ANSWER" != "Y" ]] && exit 0
+    sed -i "/$BEGIN_MARKER/,/$END_MARKER/d" /etc/profile
+fi
+
+echo "Select notification method:"
+echo "  1) Webhook"
+echo "  2) Telegram"
+read -rp "Method [1/2]: " METHOD
+
+if [ "$METHOD" = "1" ]; then
+    read -rp "Webhook user: " WH_USER
+    [ -z "$WH_USER" ] && { echo "Error: webhook user is required" >&2; exit 1; }
+
+    read -rsp "Webhook password: " WH_PASS
+    echo
+    [ -z "$WH_PASS" ] && { echo "Error: webhook password is required" >&2; exit 1; }
+
+    read -rp "Webhook URL: " WH_URL
+    [ -z "$WH_URL" ] && { echo "Error: webhook URL is required" >&2; exit 1; }
+    [[ "$WH_URL" =~ ^https?:// ]] || { echo "Error: webhook URL must start with http:// or https://" >&2; exit 1; }
+
+    # Validate no whitespace in credentials (netrc delimiter is whitespace)
+    if [[ "$WH_USER" =~ [[:space:]] || "$WH_PASS" =~ [[:space:]] ]]; then
+        echo "Error: webhook user and password must not contain spaces" >&2
+        exit 1
+    fi
+
+    # Escape percent signs to prevent printf format interpretation
+    WH_PASS_ESC="${WH_PASS//%/%%}"
+
+    BLOCK=$(cat <<EOF
+$BEGIN_MARKER
+if [ -n "\$SSH_CONNECTION" ]; then
+    curl -s -o /dev/null --netrc-file <(printf 'machine * login %s password %s' '$WH_USER' '$WH_PASS_ESC') \\
+        -d "user=\$USER&remote=\$SSH_CLIENT" '$WH_URL' > /dev/null 2>&1 &
+fi
+$END_MARKER
+EOF
+)
+
+elif [ "$METHOD" = "2" ]; then
+    read -rp "Telegram bot token: " TG_TOKEN
+    [ -z "$TG_TOKEN" ] && { echo "Error: bot token is required" >&2; exit 1; }
+
+    read -rp "Telegram chat ID: " TG_CHAT_ID
+    [ -z "$TG_CHAT_ID" ] && { echo "Error: chat ID is required" >&2; exit 1; }
+    [[ "$TG_CHAT_ID" =~ ^-?[0-9]+$ ]] || { echo "Error: chat ID must be numeric" >&2; exit 1; }
+
+    BLOCK=$(cat <<EOF
+$BEGIN_MARKER
+if [ -n "\$SSH_CONNECTION" ]; then
+    curl -s -o /dev/null -X POST 'https://api.telegram.org/bot$TG_TOKEN/sendMessage' \\
+        --data-urlencode "chat_id=$TG_CHAT_ID" \\
+        --data-urlencode "text=SSH login: \$USER from \$SSH_CLIENT" > /dev/null 2>&1 &
+fi
+$END_MARKER
+EOF
+)
+
+else
+    echo "Error: invalid method '$METHOD'" >&2
+    exit 1
+fi
+
+echo "$BLOCK" | tee -a /etc/profile > /dev/null || { echo "Error: failed to write to /etc/profile" >&2; exit 1; }
+echo "SSH alert configured in /etc/profile"
