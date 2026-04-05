@@ -1,0 +1,10 @@
+#!/bin/bash
+cat <<'EOF'
+Configuração de Swap com ZRAM (Fedora)
+
+Ver exemplo de configuração:
+  cat /usr/share/doc/zram-generator/zram-generator.conf.example
+
+Editar configuração:
+  nano /usr/lib/systemd/zram-generator.conf
+EOF

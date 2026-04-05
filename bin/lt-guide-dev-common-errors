@@ -1,0 +1,14 @@
+#!/bin/bash
+cat <<'EOF'
+Soluções para Erros Comuns de Desenvolvimento
+
+=== SQLException ===
+  could not extract ResultSet; nested exception is
+  org.hibernate.exception.GenericJDBCException: could not extract ResultSet
+
+  Solução: Executar create_schema_extensions.sql no pgAdmin ou via psql:
+    \i src/create_schema_extensions.sql
+
+=== Maven: módulos não indexando ===
+  Clicar com o botão direito em pom.xml > Maven > Reload Project
+EOF

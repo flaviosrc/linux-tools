@@ -1,0 +1,13 @@
+#!/bin/bash
+cat <<'EOF'
+Como habilitar compartilhamento de clipboard com SPICE (KVM/QEMU)
+
+No gerenciador de VMs (virt-manager), adicionar um canal SPICE à VM:
+  name: com.redhat.spice.0
+  type: Spice agent (spicevmc)
+
+Reiniciar a VM após adicionar o canal.
+
+Na máquina guest Linux, instalar o agente SPICE:
+  apt install spice-vdagent
+EOF

@@ -1,0 +1,32 @@
+#!/bin/bash
+cat <<'EOF'
+Instruções para configurar interface de rede em modo bridge
+
+- Instalar bridge-utils:
+    apt install bridge-utils
+
+- Editar o arquivo de interfaces:
+    vi /etc/network/interfaces
+
+- Configurar a NIC em modo manual:
+    auto enp2s0
+    iface enp2s0 inet manual
+
+- Configurar a interface bridge com parâmetros padrão:
+    auto br0
+    iface br0 inet dhcp
+        bridge_ports enp2s0
+        bridge_fd 0         # define forwarding delay para 0
+        bridge_stp off      # desativa spanning tree protocol
+        bridge_waitport 0   # define tempo de espera para porta ativa em 0
+
+- Reiniciar o serviço de rede:
+    systemctl restart networking
+
+Notas:
+  - Erro 'Error starting domain: while connecting to monitor: Spice' ocorre ao usar
+    spice com bridge sem endereço de rota. Solução: alterar 'Listen type' da VM de
+    'address' para 'None'.
+  - Se vnet não funcionar após 'systemctl restart networking.service',
+    execute 'systemctl restart libvirtd'.
+EOF

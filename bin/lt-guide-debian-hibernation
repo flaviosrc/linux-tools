@@ -1,0 +1,23 @@
+#!/bin/bash
+cat <<'EOF'
+Como configurar o Debian para hibernar com /swapfile dentro de partição root criptografada
+
+1 - Obter o offset físico do swapfile:
+    filefrag -v /swapfile
+    # o offset físico é o 4º valor da primeira linha iniciada por '0:', ex. '28571648'.
+
+2 - Obter o caminho do dispositivo root:
+    df -h
+    # se criptografado, aparece como: '/dev/mapper/nvme0n1p3_crypt'.
+
+3 - Editar o grub e adicionar as informações de resume:
+    vi /etc/default/grub
+    # adicionar 'resume=/dev/mapper/nvme0n1p3_crypt resume_offset=28571648' em GRUB_CMDLINE_LINUX_DEFAULT
+    # antes: GRUB_CMDLINE_LINUX_DEFAULT="quiet"
+    # depois: GRUB_CMDLINE_LINUX_DEFAULT="quiet resume=/dev/mapper/nvme0n1p3_crypt resume_offset=28571648"
+
+4 - Atualizar o grub:
+    update-grub
+
+# Reiniciar antes da primeira hibernação para garantir que as alterações foram gravadas
+EOF

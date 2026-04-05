@@ -1,0 +1,15 @@
+#!/bin/bash
+cat <<'EOF'
+Configuração de chaves SSH
+
+Gerar chave:
+  ssh-keygen -t ed25519 -C "your_email@example.com"
+  # ou RSA:
+  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+Adicionar ao agente SSH:
+  ssh-add ~/.ssh/id_ed25519
+
+Conectar usando chave privada:
+  ssh -i privateKeyFileName "username@address"
+EOF

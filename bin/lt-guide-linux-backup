@@ -1,0 +1,25 @@
+#!/bin/bash
+cat <<'EOF'
+Backup completo do sistema com rsync
+
+Referência: https://wiki.archlinux.org/title/Rsync#Full_system_backup
+Dica:       https://www.explainshell.com/
+
+Comando:
+  rsync -aAXHv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /path/to/backup
+
+Flags:
+  -a          modo archive (preserva links, permissões, timestamps, etc.)
+  -A          preserva ACLs
+  -X          preserva atributos estendidos
+  -H          preserva hard links (usa mais memória)
+  -v          verbose
+  --exclude   exclui diretórios da lista
+
+Notas:
+  - Excluir sempre o diretório de destino para evitar loop infinito
+  - Para sparse files (virtual disks, Docker images), adicionar a flag -S
+
+Restaurar backup:
+  Inverter origem e destino no mesmo comando rsync
+EOF

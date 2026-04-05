@@ -1,0 +1,20 @@
+#!/bin/bash
+cat <<'EOF'
+Referência de Permissões Linux
+
+Sintaxe:
+  chmod [owner][group][others] file/directory
+
+Valores de permissão:
+  Read  (R): 4
+  Write (W): 2
+  Execute (X): 1
+
+Exemplos:
+  chmod 660 arquivo    # RW para owner e group, nada para others (4+2=6)
+  chmod 755 arquivo    # RWX para owner, RX para group e others
+
+Notação de permissões em ls -l:
+  ['-' ou 'd'] [rwx owner] [rwx group] [rwx others]
+  '-' = arquivo, 'd' = diretório
+EOF

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+    echo "[WARN] este script deve ser executado como root!"
+    exit 1
+fi
+
+systemctl restart NetworkManager
+ip link set br0 down
+ip link set br0 up

@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# ex. lt-backup-secure-copy /mnt/storage/ /mnt/backup/
+# com "/" no final copia todo o conteudo dentro do diretório
+
+PATH_ATUAL=$(pwd)
+
+ORIGEM_DIR=$1
+DESTINO_DIR=$2
+PARAMETROS_RSYNC="--info=progress2 --checksum $3"
+
+ORIGEM_SHA="/tmp/$(openssl rand -hex 16).sha"
+DESTINO_SHA="/tmp/$(openssl rand -hex 16).sha"
+
+echo "[INFO] Resumo da operação
+- De: $(realpath $ORIGEM_DIR)
+- Para: $(realpath $DESTINO_DIR)
+- Parametros RSYNC: $PARAMETROS_RSYNC"
+
+read -p "Deseja continuar? (s/n): " CONFIRMACAO
+
+if [ "$CONFIRMACAO" != "s" ]; then
+  echo "[INFO] Operação cancelada."
+  exit 1
+fi
+
+set -e
+
+echo "[INFO] gerando sha256sum dos arquivos na origem..."
+
+cd $PATH_ATUAL && cd $ORIGEM_DIR
+
+find . -type f -exec sha256sum "{}" + | sort > $ORIGEM_SHA
+
+echo "[INFO] copiando de $ORIGEM_DIR para $DESTINO_DIR..."
+
+cd $PATH_ATUAL
+
+rsync -aHAX $PARAMETROS_RSYNC $ORIGEM_DIR $DESTINO_DIR
+
+echo "[INFO] gerando sha256sum dos arquivos no destino..."
+
+cd $PATH_ATUAL && cd $DESTINO_DIR
+
+find . -type f -exec sha256sum "{}" + | sort > $DESTINO_SHA
+
+echo "[INFO] verificando integridade dos arquivos..."
+
+diff $ORIGEM_SHA $DESTINO_SHA
+
+rm $ORIGEM_SHA $DESTINO_SHA
+
+set +e
+
+echo "[INFO] Arquivos copiados com sucesso!"
+
+exit 0

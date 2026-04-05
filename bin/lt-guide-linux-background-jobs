@@ -1,0 +1,20 @@
+#!/bin/bash
+cat <<'EOF'
+Gerenciamento de jobs em background no Linux
+
+Executar processo em background:
+  sudo someExecutable &
+
+Listar jobs em background:
+  jobs
+
+Desanexar job do terminal (não mata ao fechar):
+  disown %1
+
+Enviar processo atual para background:
+  Ctrl+Z    (pausa o processo)
+  bg        (retoma em background)
+
+Ver tarefas em background:
+  bg
+EOF

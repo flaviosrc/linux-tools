@@ -1,0 +1,22 @@
+#!/bin/bash
+cat <<'EOF'
+Gerenciamento de sessões screen no Linux
+
+Listar sessões:
+  screen -ls
+
+Criar sessão:
+  screen -S screenName
+
+Acessar sessão:
+  screen -r screenPort
+
+Sair sem matar a sessão (detach):
+  Ctrl + A, D
+
+Sair e matar a sessão:
+  Ctrl + C
+
+Anexar a sessão não detachada (modo multi-display):
+  screen -x screenPort
+EOF

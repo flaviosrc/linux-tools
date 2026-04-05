@@ -1,0 +1,9 @@
+#!/bin/bash
+cat <<'EOF'
+Como definir o timezone no Debian/Ubuntu
+
+  timedatectl set-timezone America/Sao_Paulo
+
+Para listar todos os timezones disponíveis:
+  timedatectl list-timezones
+EOF

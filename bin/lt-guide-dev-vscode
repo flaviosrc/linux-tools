@@ -1,0 +1,15 @@
+#!/bin/bash
+cat <<'EOF'
+Ambiente VS Code para desenvolvimento (econt-agro)
+
+Extensões - Backend (econt-agro-service):
+  - Lombok Annotations Support for VS Code (Gabriel Basilio Brito)
+  - Java Extension Pack (Microsoft)
+  - Spring Boot Extension Pack (Pivotal)
+
+Extensões - Frontend (econt-agro-frontend):
+  - ESLint (Microsoft)
+
+Limpar workspace Java (Ctrl+Shift+P):
+  Java: Clean the Java language server workspace
+EOF

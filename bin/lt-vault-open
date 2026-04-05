@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# ex.
+# $ lt-vault-open Documentos/cofre-pessoal
+
+if [ "$EUID" -ne 0 ]; then
+    echo "[WARN] este script deve ser executado como root!"
+    exit 1
+fi
+
+PATH_ATUAL=$(pwd)
+ORIGEM_DO_COFRE=$1
+NOME_DO_COFRE=$(basename $ORIGEM_DO_COFRE)
+PONTO_DE_MONTAGEM="/mnt/$NOME_DO_COFRE"
+
+cd $PATH_ATUAL
+
+echo "[INFO] Resumo da operação
+- Nome do cofre: ${NOME_DO_COFRE}
+- Origem do cofre: ${ORIGEM_DO_COFRE}
+- Ponto de Montagem: ${PONTO_DE_MONTAGEM}"
+
+read -p "Deseja continuar? (s/n): " CONFIRMACAO
+
+if [ "$CONFIRMACAO" != "s" ]; then
+  echo "[INFO] Operação cancelada."
+  exit 1
+fi
+
+set -e
+
+echo "[INFO] Abrindo o cofre $NOME_DO_COFRE..."
+cryptsetup open $ORIGEM_DO_COFRE $NOME_DO_COFRE
+
+echo "[INFO] Montando o cofre em $PONTO_DE_MONTAGEM..."
+mount -m /dev/mapper/$NOME_DO_COFRE $PONTO_DE_MONTAGEM
+
+set +e
+
+echo "[INFO] Cofre $NOME_DO_COFRE aberto com sucesso!"
+
+exit 0

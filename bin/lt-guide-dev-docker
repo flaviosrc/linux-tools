@@ -1,0 +1,25 @@
+#!/bin/bash
+cat <<'EOF'
+Docker - Dicas e Truques
+
+Usar containers de banco de dados em vez de instalar na máquina:
+
+  Flags:
+    -p  port forwarding (hostPort:containerPort)
+    --name  nome do container
+    -e  variáveis de ambiente
+    -d  modo daemon (roda em background)
+
+  PostgreSQL:
+    docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+    docker exec -it -u postgres <container_id> psql
+
+  MySQL:
+    docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=mysql -d mysql
+
+  RabbitMQ:
+    docker run -d -p 5672:5672 --hostname my-rabbitmq rabbitmq:3
+
+Build de imagem:
+  docker image build -t econt-agro-service ~/Desktop/repository/econt/econt-agro-service/
+EOF

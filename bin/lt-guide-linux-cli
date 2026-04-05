@@ -1,0 +1,31 @@
+#!/bin/bash
+cat <<'EOF'
+Linux CLI - Referência rápida
+
+Utilitários:
+  sudo su                         # trocar para root
+  nano                            # editor de texto no terminal
+  shutdown -h +60                 # desligar em 60 minutos
+  shutdown -c                     # cancelar desligamento agendado
+  apt install <pacote>
+
+Montar dispositivos:
+  mount /dev/cdrom /media         # (caminho do disco) e (ponto de montagem)
+
+Instalação de pacotes:
+  dpkg -i package.deb
+  tar -vzxf pacote.tar.gz
+  tar -xJf pacote.tar.xz
+  sh install.sh
+  ./configure && make && make install
+  apt-get autoremove
+
+Permissões e propriedade:
+  chmod 775 /var/www/html         # permissão total para owner e grupo
+  chown -R USUARIO /var/www/html  # alterar dono do diretório
+
+Flags comuns:
+  sudo     executa como root
+  -f       instala dependências
+  -y       confirma automaticamente
+EOF

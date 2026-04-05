@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+if [ "$EUID" -ne 0 ]; then
+    echo "[WARN] este script deve ser executado como root!"
+    exit 1
+fi
+
+echo "[INFO] instalando lt-backup-snapshot em /usr/local/bin"
+
+cp "$(dirname "$0")/lt-backup-snapshot" /usr/local/bin/lt-backup-snapshot
+
+chmod +x /usr/local/bin/lt-backup-snapshot
+
+echo "[INFO] criando cron se não existir"
+
+crontab -l 2>/dev/null | grep -F "lt-backup-snapshot" || (crontab -l 2>/dev/null; echo "*/15 * * * * /usr/local/bin/lt-backup-snapshot") | crontab -
+
+crontab -l

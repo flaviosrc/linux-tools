@@ -1,0 +1,8 @@
+#!/bin/bash
+cat <<'EOF'
+Como adicionar usuário ao grupo sudo:
+
+  usermod -aG sudo yourUserName
+
+Relogar após executar para as permissões entrarem em vigor.
+EOF

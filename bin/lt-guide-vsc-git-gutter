@@ -1,0 +1,14 @@
+#!/bin/bash
+cat <<'EOF'
+VS Code: Git Gutter não funcionando
+
+Problema conhecido: VS Code não detecta modificações git em tempo real
+em pastas acessadas via symlinks.
+
+Causa: Bug do VS Code com diretórios linkados simbolicamente.
+
+Solução: Abrir o workspace diretamente pelo caminho real (sem symlink).
+
+Lição aprendida: Usar menos root e evitar instalações via RPM que deixam
+resíduos no sistema ao remover.
+EOF

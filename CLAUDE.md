@@ -39,3 +39,25 @@ bash uninstall.sh   # removes all lt-* binaries and installed lib/config dirs
 - **GPG**: generate, import, export (public/private) keys for Git commit signing
 - **Git**: global defaults and per-repository identity + optional GPG signing
 - **SSH**: temporary keys (1h TTL via `ssh-add -t 1h`) and permanent keys with `~/.ssh/config` entries
+- **Backup**: secure copy with SHA256 integrity check (`lt-backup-secure-copy`); incremental rsync snapshots with hardlinks and retention (`lt-backup-snapshot`)
+- **Vault**: create, open, and close LUKS-encrypted virtual disk vaults (`lt-vault-create/open/close`)
+- **System**: add deploy user to docker group, create swapfile, remount USB media, restart bridge interface
+- **Guides** (`lt-guide-*`): reference scripts that print instructions when executed — no side effects
+  - `lt-guide-debian-*`: bridge setup, clipboard sharing, hibernation, lid action, NIC routing, sudoer, timezone
+  - `lt-guide-linux-*`: background jobs, backup, CLI reference, mount, partitioning, permissions, password reset, RPM, samba, screen, SSH keygen, swap (ZRAM)
+  - `lt-guide-dev-*`: build/start dev environment, Docker tips, common errors, SonarQube, VS Code setup
+  - `lt-guide-win-*`: Windows activation, subnet ping map, signature verification
+  - `lt-guide-encrypted-volume`: LUKS volume creation, key file, auto-mount via crypttab/fstab
+  - `lt-guide-wifi-audit`: wifite WPA audit guide
+- **Reference** (`lt-ref-*`): one-liner info scripts (e.g., `lt-ref-debian-archive`)
+
+## Guide Script Convention
+
+Guide scripts (`lt-guide-*`, `lt-ref-*`) contain no logic — they exist solely to print reference content:
+
+```bash
+#!/bin/bash
+cat <<'EOF'
+... content ...
+EOF
+```

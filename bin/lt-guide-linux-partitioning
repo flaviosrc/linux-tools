@@ -1,0 +1,21 @@
+#!/bin/bash
+cat <<'EOF'
+Anotações sobre particionamento Linux
+
+1. Para tabela de partições, atualmente usar GPT.
+
+2. Para boot UEFI (não legacy) é obrigatório partição do tipo boot fat32
+   montada em /boot/efi.
+
+3. Memória swap não é obrigatória e pode ser uma partição do tipo swap
+   ou um arquivo /swapfile.
+
+4. Para ter mais de um SO na mesma máquina, é recomendável que cada sistema
+   tenha sua própria partição EFI com seu próprio bootloader. Compartilhar
+   bootloader entre SOs não é recomendado por incompatibilidade de versões.
+
+5. Para sistemas totalmente criptografados, as partições efi (/boot/efi) e boot
+   (/boot) são obrigatórias e não podem ser criptografadas. Uma partição swap é
+   conveniente para hibernação, porém ao hibernar tudo em execução ficará exposto
+   em área não criptografada.
+EOF

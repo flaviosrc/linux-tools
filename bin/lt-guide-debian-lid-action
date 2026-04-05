@@ -1,0 +1,17 @@
+#!/bin/bash
+cat <<'EOF'
+Como configurar a ação ao fechar a tampa do notebook
+
+Editar o arquivo:
+  /etc/systemd/logind.conf
+
+Alterar todos os parâmetros HandleLidSwitch para o valor desejado:
+  HandleLidSwitch=ignore        # não faz nada
+  HandleLidSwitch=suspend       # suspende (padrão)
+  HandleLidSwitch=hibernate     # hiberna
+  HandleLidSwitch=poweroff      # desliga
+
+Após editar, recarregar o serviço:
+  systemctl reload systemd-logind.service
+  systemctl daemon-reload
+EOF

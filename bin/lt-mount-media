@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+    echo "[WARN] este script deve ser executado como root!"
+    exit 1
+fi
+
+umount /dev/sda1
+mount /dev/sda1 /media/root/Ventoy

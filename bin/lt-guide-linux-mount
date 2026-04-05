@@ -1,0 +1,20 @@
+#!/bin/bash
+cat <<'EOF'
+Como montar discos no Linux
+
+Montar disco sda1 em /mnt:
+  mount /dev/sda1 /mnt
+
+Montar disco criptografado:
+  1. Descriptografar e nomear (montado em /dev/mapper/diskName):
+       cryptsetup open /dev/sda2 diskName
+  2. Montar:
+       mount /dev/mapper/diskName /mnt
+
+Desmontar:
+  umount /mnt
+
+Recomendações:
+  Criar um diretório para cada dispositivo antes de montar:
+    mkdir /mnt/diskName
+EOF

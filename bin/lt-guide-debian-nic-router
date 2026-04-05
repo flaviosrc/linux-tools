@@ -1,0 +1,11 @@
+#!/bin/bash
+cat <<'EOF'
+Como rotear uma sub-rede com DHCP/DNS usando Debian com GNOME
+
+1. Abrir: Configurações > Rede > Opções da Rede Cabeada > IPv4
+2. Alterar o Método IPv4 para "Compartilhado com outros computadores"
+
+O computador passará a rotear uma nova rede pela NIC com DHCP e DNS automáticos.
+Para ter acesso à internet nessa rede, é necessário outra NIC com conexão à internet.
+Usar WiFi transmite a internet automaticamente para a NIC e todos os dispositivos conectados.
+EOF

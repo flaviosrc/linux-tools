@@ -1,0 +1,18 @@
+#!/bin/bash
+cat <<'EOF'
+Configuração do Samba
+
+Editar o arquivo de configuração:
+  /etc/samba/smb.conf
+  (definir caminho de pastas compartilhadas e propriedades)
+
+O Samba usa os usuários do sistema, mas requer uma senha própria.
+Criar/alterar senha de usuário samba:
+  smbpasswd -a "username"
+
+Criar usuários e grupos no sistema:
+  adduser
+  addgroup
+
+Por padrão, o grupo de novos usuários é o próprio username.
+EOF

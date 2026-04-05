@@ -1,0 +1,25 @@
+#!/bin/bash
+cat <<'EOF'
+Ferramentas e utilitários para pacotes RPM
+
+Um pacote RPM é um arquivo CPIO com uma estrutura de header, composto por:
+  - header:  identificador do arquivo como RPM
+  - signature: verificação de integridade
+  - header data: informações do pacote (versão, copyright, etc.)
+  - archive: os arquivos do programa
+
+Converter RPM para CPIO e extrair:
+  rpm2cpio package.rpm | cpio -idmv
+    -i  extrai arquivo do archive
+    -d  cria diretórios necessários
+    -m  preserva data de modificação
+    -v  verbose
+
+Listar arquivos em um pacote RPM:
+  rpm -qlpv uninstalledPackage.rpm   # pacote não instalado
+  rpm -qlv installedPackageName      # pacote instalado
+    -q  query
+    -l  lista arquivos
+    -p  consulta pacote não instalado
+    -v  verbose
+EOF

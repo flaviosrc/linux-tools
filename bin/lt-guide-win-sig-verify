@@ -1,0 +1,8 @@
+#!/bin/bash
+cat <<'EOF'
+Verificar assinatura digital de executável no Windows (PowerShell)
+
+Get-AuthenticodeSignature -FilePath "C:\Users\lourenco\Downloads\npp.8.8.2.Installer.x64.exe"
+
+Retorna: Subject, Issuer, Status (Valid/NotSigned/UnknownError)
+EOF
