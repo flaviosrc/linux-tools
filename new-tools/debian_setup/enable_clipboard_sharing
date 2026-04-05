@@ -1,8 +1,0 @@
-using spice display, add spicevmc channel then reboot the vm
-
-name: com.redhat.spice.0
-type: Spice agent (spicevmc)
-
-install spice-vdagent in linux guest machine
-
-$ apt install spice-vdagent

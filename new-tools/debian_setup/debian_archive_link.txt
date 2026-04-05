@@ -1,2 +1,0 @@
-where to download old debian cdimages
-https://cdimage.debian.org/cdimage/archive/

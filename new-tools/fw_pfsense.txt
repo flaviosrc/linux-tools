@@ -1,9 +1,0 @@
-wan addr: 192.168.15.3/24
-lan addr: 192.168.1.1/24
-
-webui
-user: admin
-pass: ?D=Jd+:JhgR3n=W
-
-netgate pfsense shop
-password: bpNfK-.E+u4j6#Q

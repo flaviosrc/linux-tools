@@ -1,7 +1,0 @@
-roteador intelbras
-endereço: 10.0.0.1
-senha: mm3?R~e;*YeUeXb
-
-wifi
-wifi: 781263
-senha: Jklm@987

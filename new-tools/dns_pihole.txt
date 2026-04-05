@@ -1,4 +1,0 @@
-http://pi.hole/admin:80
-http://10.0.0.31:80/admin
-
-password: ji2TFsCz
