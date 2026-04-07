@@ -41,20 +41,21 @@ if [ "$METHOD" = "1" ]; then
     [ -z "$WH_URL" ] && { echo "Error: webhook URL is required" >&2; exit 1; }
     [[ "$WH_URL" =~ ^https?:// ]] || { echo "Error: webhook URL must start with http:// or https://" >&2; exit 1; }
 
-    # Validate no whitespace in credentials (netrc delimiter is whitespace)
-    if [[ "$WH_USER" =~ [[:space:]] || "$WH_PASS" =~ [[:space:]] ]]; then
-        echo "Error: webhook user and password must not contain spaces" >&2
+    # Validate no whitespace or single quotes in credentials (netrc uses whitespace as delimiter)
+    if [[ "$WH_USER" =~ [[:space:]\'] || "$WH_PASS" =~ [[:space:]\'] ]]; then
+        echo "Error: webhook user and password must not contain spaces or single quotes" >&2
         exit 1
     fi
 
-    # Escape percent signs to prevent printf format interpretation
-    WH_PASS_ESC="${WH_PASS//%/%%}"
+    NETRC_FILE="/etc/lt-ssh-alert.netrc"
+    printf 'machine * login %s password %s\n' "$WH_USER" "$WH_PASS" > "$NETRC_FILE"
+    chmod 600 "$NETRC_FILE"
 
     BLOCK=$(cat <<EOF
 $BEGIN_MARKER
 if [ -n "\$SSH_CONNECTION" ]; then
-    curl -s -o /dev/null --netrc-file <(printf 'machine * login %s password %s' '$WH_USER' '$WH_PASS_ESC') \\
-        -d "user=\$USER&remote=\$SSH_CLIENT" '$WH_URL' > /dev/null 2>&1 &
+    ( curl -s -o /dev/null --netrc-file /etc/lt-ssh-alert.netrc \\
+        -d "user=\$USER&remote=\$SSH_CLIENT" '$WH_URL' > /dev/null 2>&1 & )
 fi
 $END_MARKER
 EOF
@@ -71,9 +72,9 @@ elif [ "$METHOD" = "2" ]; then
     BLOCK=$(cat <<EOF
 $BEGIN_MARKER
 if [ -n "\$SSH_CONNECTION" ]; then
-    curl -s -o /dev/null -X POST 'https://api.telegram.org/bot$TG_TOKEN/sendMessage' \\
+    ( curl -s -o /dev/null -X POST 'https://api.telegram.org/bot$TG_TOKEN/sendMessage' \\
         --data-urlencode "chat_id=$TG_CHAT_ID" \\
-        --data-urlencode "text=SSH login: \$USER from \$SSH_CLIENT" > /dev/null 2>&1 &
+        --data-urlencode "text=SSH login: \$USER from \$SSH_CLIENT" > /dev/null 2>&1 & )
 fi
 $END_MARKER
 EOF
