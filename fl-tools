@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+COMMAND_DIR="$HOME/.local/share/fl-tools/bin"
+cmd $
