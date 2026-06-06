@@ -3,19 +3,32 @@
 ROOT_DIR="$(dirname $(dirname $(realpath $0)))"
 LIB_DIR="$ROOT_DIR/lib"
 
+path="$LIB_DIR"
+
 if [[ "$1" == "__complete" ]]; then
-    find "$LIB_DIR" -maxdepth 1 -type f -printf '%f\n'
+    shift
+
+    for arg in "$@"; do
+        [[ -d "$path/$arg" ]] || exit 0
+        path="$path/$arg"
+    done
+
+    find "$path" -maxdepth 1 -mindepth 1 -printf '%f\n'
     exit 0
+
+   # find "$LIB_DIR" -maxdepth 1 -type f -printf '%f\n'
+   # exit 0
 fi
 
-SCRIPT_NAME="$1"
-shift
 
-SCRIPT_PATH="$LIB_DIR/$SCRIPT_NAME"
-
-if [[ -x "$SCRIPT_PATH" ]]; then
-    exec "$SCRIPT_PATH" "$@"
-fi
-
-echo "Unknown command: $SCRIPT_NAME"
-exit 1
+while [[ $# -gt 0 ]]; do
+    if [[ -d "$path/$1" ]]; then
+        path="$path/$1"
+        shift
+    elif [[ -x "$path/$1" ]]; then
+        exec "$path/$1" "${@:2}"
+    else
+        echo "Unknown command $1"
+        exit 1
+    fi
+done
