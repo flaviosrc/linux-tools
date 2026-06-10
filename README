@@ -1,4 +1,98 @@
-# linux-tools
+lit helps users deploy and use linux tools
+
+description:
+
+ lit is a linux tool designed to help with the deployment and usage of other
+linux tools. It can either help users through step-by-step instructions or
+automated workflows.
+
+modes:
+
+ lit - execution mode, can execute any executable lib file.
+ lit-ro - read only mode, can read any lib file.
+
+usage examples:
+
+ lit lit install - install lit system-wide
+ lit lit help - print lit help
+ lit ssh add-priv-key-temp - add temporary ssh private key
+ lit rsync backup snapshot - start rsync snapshot backup
+
+config:
+
+ generated config files for automated workflows will be saved in:
+
+ ~/.config/lib-name/workflow-name.conf
+
+dependecy:
+
+ code dependencies is not recomended, follow this when dependency becomes
+ necessarie to avoid code duplication or better code organization.
+
+ all executed script by execution mode will have the env "$APP_PATH"
+ filled with current app location full path.
+
+ to import shared dependencies:
+
+  app_path="$APP_PATH"
+  source "$app_path/share/shared-script"
+
+ to import local dependencies:
+
+  local_path="$(dirname $(realpath $0))"
+  source "$local_path/local-script"
+
+rules:
+ 1. all code should be human-readable first.
+ 2. all automated workflow should requires user confirmation before execute.
+ 3. do not mention this tool name inside other tools code.
+
+directory and files hierarchy:
+
+ README - github standard description file
+
+ bin/ - tool launcher
+ bin/lit - execution mode, can execute any executable lib file.
+ bin/lit-ro - read only mode, can read any lib file.
+
+ share/ - shared scripts
+ share/logger - standard logging
+
+ lib/ - tools library
+ lib/lit/ - lit library
+ lib/lit/autocomplete
+ lib/lit/autocomplete/lit-bash-automcomplete.sh
+ lib/lit/install
+ lib/lit/help
+
+tools library:
+
+ lib/rsync/
+ lib/curl/
+ lib/ssh/
+ lib/gpg/
+ lib/git/
+ lib/luks/
+ lib/rpm/
+ lib/screen/
+ lib/docker/
+ lib/samba/
+ lib/fdisk/
+ lib/mount/
+ lib/useradd/
+ lib/usermod/
+ lib/systemd/
+ lib/swapfile/
+ lib/zram/
+ lib/xterm/
+ lib/vim/
+ lib/openbox/
+ lib/pipewire/
+ lib/iwd/
+
+
+
+####### old readme.md
 
 A personal Unix toolbox for Linux professionals. One command to set up any machine — bare metal, Docker, or Kubernetes — exactly the way you want it.
 

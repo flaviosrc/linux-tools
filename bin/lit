@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-ROOT_DIR="$(dirname $(dirname $(realpath $0)))"
-LIB_DIR="$ROOT_DIR/lib"
+APP_PATH="$(dirname $(dirname $(realpath $0)))"
 
-path="$LIB_DIR"
+path="$APP_PATH/lib"
 
 if [[ "$1" == "__complete" ]]; then
     shift
@@ -26,7 +25,7 @@ while [[ $# -gt 0 ]]; do
         path="$path/$1"
         shift
     elif [[ -x "$path/$1" ]]; then
-        exec "$path/$1" "${@:2}"
+        APP_PATH=$APP_PATH exec "$path/$1" "${@:2}"
     else
         echo "Unknown command $1"
         exit 1

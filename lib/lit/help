@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+app_path=$APP_PATH
+
+cat "$app_path/README"

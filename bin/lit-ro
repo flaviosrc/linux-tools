@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+APP_PATH="$(dirname $(dirname $(realpath $0)))"
+
+path="$APP_PATH/lib"
+
+while [[ $# -gt 0 ]]; do
+    if [[ -d "$path/$1" ]]; then
+        path="$path/$1"
+        shift
+    elif [[ -f "$path/$1" ]]; then
+          cat "$path/$1"
+        exit 0
+    else
+        echo "Unknown command $1"
+        exit 1
+    fi
+done

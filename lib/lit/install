@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+app_path=$APP_PATH
+app_name=$(basename $APP_PATH)
+
+echo ""
+echo "Para melhor usabilidade da ferramenta"
+echo ""
+echo "Adicione $app_name/bin ao seu \$PATH:"
+echo "$ echo \"PATH=\\\$PATH:$app_path/bin\" >> ~/.bashrc"
+echo ""
+echo "Habilite o bash autocomplete:"
+echo "$ echo \"source $app_path/lib/lit/autocomplete/lit-bash-autocomplete.sh\" >> ~/.bashrc"
+echo ""

@@ -1,6 +1,0 @@
-#!/bin/bash
-cat <<'EOF'
-Onde baixar imagens antigas do Debian:
-
-  https://cdimage.debian.org/cdimage/archive/
-EOF
