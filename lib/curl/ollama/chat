@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+OLLAMA_BASE_URL="http://192.168.100.120:11434"
+OLLAMA_MODEL="llama3"
+OLLAMA_NUM_CTX=131072
+PROMPT="Why is the sky blue?"
+
+REQ_BODY='{
+  "model": "llama3",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Why is the sky blue"
+    }
+  ],
+  "stream": true
+}'
+
+curl -s http://192.168.100.120:11434/api/chat -d '{
+    "model": "llama3",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Why is the sky blue"
+      }
+    ]
+  }' | jq -rj '.message.content // empty'
+
+exit 0
