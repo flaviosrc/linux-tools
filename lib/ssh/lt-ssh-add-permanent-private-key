@@ -2,11 +2,11 @@
 
 echo "[INFO] script para adicionar chave privada permanente"
 
-read -p "Modo de configuração — [1] Host alias (padrão, GitHub/múltiplas contas) / [2] Match Host+User (servidores com usuários distintos): " mode
+read -e -p "Modo de configuração — [1] Host alias (padrão, GitHub/múltiplas contas) / [2] Match Host+User (servidores com usuários distintos): " mode
 mode="${mode:-1}"
 
-read -p "Usuário do host (ex: git, alice): " host_user
-read -p "Endereço do host (ex: github.com, myserver.com): " host_address
+read -e -p "Usuário do host (ex: git, alice): " host_user
+read -e -p "Endereço do host (ex: github.com, myserver.com): " host_address
 
 if [ "$mode" = "2" ]; then
 	key_path="$HOME/.ssh/id_${host_address//./_}_${host_user}"
@@ -14,10 +14,10 @@ if [ "$mode" = "2" ]; then
 	new_config="Match Host $host_address User $host_user
 	IdentityFile $key_path"
 else
-	read -p "Apelido do host (auto: $host_user.$host_address): " host_alias
+	read -e -p "Apelido do host (auto: $host_user.$host_address): " host_alias
 	host_alias="${host_alias:-$host_user.$host_address}"
 
-	read -p "Porta do host (padrão: 22): " host_port
+	read -e -p "Porta do host (padrão: 22): " host_port
 	host_port="${host_port:-22}"
 
 	key_path="$HOME/.ssh/id_${host_alias//./_}"
@@ -33,7 +33,7 @@ echo "Resumo da operação:
 Nova config no ~/.ssh/config:
 $new_config"
 
-read -p "Deseja continuar? (s/n) " confirm
+read -e -p "Deseja continuar? (s/n) " confirm
 if [ "$confirm" != "s" ]; then
 	echo "Operação cancelada!"
 	exit 0

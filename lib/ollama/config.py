@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import readline
 import json
 import os
 
@@ -31,19 +32,19 @@ def main():
         model = "llama3"
 
     num_ctx = input(
-        "Enter context length size(number of tokens) "
-        "[131072]: "
+        "Enter context window "
+        "[32000]: "
     ).strip()
 
     if not num_ctx:
-        num_ctx = "131072"
+        num_ctx = 32000
 
     os.makedirs(CONFIG_DIR, exist_ok=True)
 
     config = {
         "api_url": api_url,
         "model": model,
-        "num_ctx": num_ctx
+        "num_ctx": int(num_ctx)
     }
 
     with open(CONFIG_FILE, "w") as f:

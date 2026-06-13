@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import readline
 import json
 import os
 import urllib.error
@@ -21,7 +22,7 @@ def load_config():
         raise FileNotFoundError(f"The config file {CONFIG_FILE} does not exist.")
 
 
-def send_message(api_url, model, message):
+def send_message(api_url, model, num_ctx, message):
     url = f"{api_url}/api/chat"
 
     payload = {
@@ -32,6 +33,9 @@ def send_message(api_url, model, message):
                 "content": message
             }
         ],
+        "options": {
+            "num_ctx" : num_ctx
+        }
     }
 
     try:
@@ -60,12 +64,25 @@ def send_message(api_url, model, message):
 def main():
     config = load_config()
 
-    print("Ollama Chat")
     print()
+    print("Ollama Chat")
 
-    message = input("Prompt: ").strip()
+    print()
+    print(f"Ollama API URL: {config["api_url"]}")
+    print(f"Model: {config["model"]}")
+    print(f"Context Window: {config["num_ctx"]}")
 
-    send_message(config["api_url"], config["model"], message)
+    while (1) :
+        print()
+        message = input("Prompt: ").strip()
+
+        print()
+        send_message(
+            config["api_url"],
+            config["model"],
+            config["num_ctx"],
+            message
+        )
 
     print()
 
