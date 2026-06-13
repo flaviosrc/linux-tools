@@ -43,7 +43,7 @@ def save_history(chat_file, messages):
 
 
 def send_message(api_url, model, num_ctx, messages):
-    """Send the full message history and return the assistant reply"""
+    """Send the full message history; return the assistant reply and token count"""
 
     url = f"{api_url}/api/chat"
 
@@ -56,6 +56,7 @@ def send_message(api_url, model, num_ctx, messages):
     }
 
     reply = ""
+    tokens = 0
 
     try:
         request = urllib.request.Request(
@@ -71,6 +72,8 @@ def send_message(api_url, model, num_ctx, messages):
                     content = chunk.get("message", {}).get("content", "")
                     reply += content
                     print(content, end="", flush=True)
+                    # The final chunk (done) carries the token usage counters
+                    tokens = chunk.get("prompt_eval_count", 0) + chunk.get("eval_count", 0) or tokens
                 except json.JSONDecodeError:
                     continue
 
@@ -78,9 +81,9 @@ def send_message(api_url, model, num_ctx, messages):
 
     except urllib.error.URLError as exc:
         print(f"Request failed: {exc}")
-        return None
+        return None, 0
 
-    return reply
+    return reply, tokens
 
 
 def main():
@@ -95,6 +98,12 @@ def main():
         chat_file = f"chat-{timestamp}.json"
         messages = []
 
+    # Seed the counter with the token usage of the last reply (0 for a new chat)
+    tokens = next(
+        (m["tokens"] for m in reversed(messages) if "tokens" in m),
+        0,
+    )
+
     print()
     print("Ollama Chat")
 
@@ -107,7 +116,7 @@ def main():
     try:
         while (1) :
             print()
-            message = input("Prompt: ").strip()
+            message = input(f"Prompt [{tokens}]: ").strip()
 
             if not message:
                 continue
@@ -115,7 +124,7 @@ def main():
             messages.append({"role": "user", "content": message})
 
             print()
-            reply = send_message(
+            reply, tokens = send_message(
                 config["api_url"],
                 config["model"],
                 config["num_ctx"],
@@ -127,7 +136,7 @@ def main():
                 messages.pop()
                 continue
 
-            messages.append({"role": "assistant", "content": reply})
+            messages.append({"role": "assistant", "content": reply, "tokens": tokens})
             save_history(chat_file, messages)
 
     except (KeyboardInterrupt, EOFError):
