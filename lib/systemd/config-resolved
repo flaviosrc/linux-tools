@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "link /etc/resolv.conf systemd-resolved stub-resolv.conf"
+
+echo "sudo rm /etc/resolv.conf"
+echo "sudo ln -s /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf"
