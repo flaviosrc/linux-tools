@@ -88,6 +88,18 @@ def send_message(api_url, model, num_ctx, messages):
     return reply, tokens, duration
 
 
+def print_history(messages):
+    """Replay a saved conversation to the terminal"""
+
+    for m in messages:
+        if m["role"] == "user":
+            print()
+            print(f"Prompt: {m['content']}")
+            print()
+        else:
+            print(m["content"])
+
+
 def main():
     config = load_config()
 
@@ -113,6 +125,9 @@ def main():
     print(f"Model: {config['model']}")
     print(f"Context Window: {config['num_ctx']}")
     print(f"Chat File: {chat_file}")
+
+    if messages:
+        print_history(messages)
 
     try:
         while (1) :
