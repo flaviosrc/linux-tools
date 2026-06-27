@@ -3,10 +3,10 @@
 cd "$(pwd)"
 
 echo "Nome de usuário do Git (ex: John Doe):"
-read git_user_name
+read -e git_user_name
 
 echo "Email do usuário do Git (ex: john.doe@example.com):"
-read git_user_email
+read -e git_user_email
 
 git config user.name "$git_user_name"
 
@@ -14,7 +14,7 @@ git config user.email "$git_user_email"
 
 echo "Deseja habilitar a assinatura GPG para commits? (s/n):"
 
-read is_gpgsign
+read -e is_gpgsign
 
 if [ "$is_gpgsign" = "s" ]; then
     git config commit.gpgsign true
