@@ -1,4 +1,0 @@
-#!/bin/bash
-
-read -e -p "Digite o nome do branch padrão para novos repositórios git (ex: main): " name
-git config --global init.defaultBranch "$name"

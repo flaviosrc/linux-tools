@@ -1,0 +1,6 @@
+#!/bin/bash
+
+read -e -p "set git init default branch name [main]: " branch_name
+branch_name="${branch_name:-main}"
+
+git config --global init.defaultBranch "$branch_name"
