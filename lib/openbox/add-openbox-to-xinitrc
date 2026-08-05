@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+xinitrc_path=$APP_PATH/conf/.xinitrc
+current_xinitrc_path=$HOME/.xinitrc
+
+xinitrc_new_line="exec openbox-session"
+
+if [[ ! -f $current_xinitrc_path ]] ; then
+    cp $xinitrc_path $current_xinitrc_path
+fi
+
+echo "current ~/.xinitrc: "
+cat $current_xinitrc_path
+
+read -e -p "want to add \"$xinitrc_new_line\" to ~/.xinitrc? [y/n] " confirm
+
+if [[ "$confirm" == "y" ]] ; then
+    echo "$xinitrc_new_line" >> $current_xinitrc_path
+else
+    echo "canceled!"
+fi
+

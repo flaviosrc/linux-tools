@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+xrc_path=$APP_PATH/conf/.Xresources
+current_xrc_path=$HOME/.Xresources
+
+if [[ -f $current_xrc_path ]] ; then
+    diff $current_xrc_path $xrc_path
+else
+    cat $xrc_path
+fi
+
+read -e -p "want to apply this settings to ~/.Xresources? [y/n] " confirm
+
+if [[ "$confirm" == "y" ]] ; then
+    cp -f $xrc_path $current_xrc_path
+    xrdb -merge $current_xrc_path
+else
+    echo "canceled!"
+fi
+

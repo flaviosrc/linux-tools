@@ -1,0 +1,21 @@
+XTerm*geometry: 84x28
+XTerm*background: black
+XTerm*foreground: white
+! Increase font size with Ctrl + Plus
+XTerm*VT100.translations: #override \
+    Ctrl <KeyPress> equal: larger-vt-font() \n\
+    Ctrl <KeyPress> KP_Add: larger-vt-font() \n\
+    Ctrl <KeyPress> minus: smaller-vt-font() \n\
+    Ctrl <KeyPress> KP_Subtract: smaller-vt-font()
+
+! Optional predefined font sizes
+XTerm*faceName: Monospace
+XTerm*faceSize1: 8
+XTerm*faceSize2: 10
+XTerm*faceSize3: 12
+XTerm*faceSize4: 14
+XTerm*faceSize5: 18
+XTerm*faceSize6: 24
+
+! Initial size
+XTerm*faceSize: 18

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+rc_path=$APP_PATH/conf/rc.xml
+current_rc_path=$HOME/.config/openbox/rc.xml
+
+if [[ -f $current_rc_path ]] ; then
+    diff $current_rc_path $rc_path
+else
+    cat $rc_path
+fi
+
+read -e -p "want to apply this settings to ~/.config/openbox/rc.xml? [y/n] " confirm
+
+if [[ "$confirm" == "y" ]] ; then
+    cp -f $rc_path $current_rc_path
+    openbox --reconfigure
+else
+    echo "canceled!"
+fi
+
