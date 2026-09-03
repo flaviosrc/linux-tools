@@ -1,18 +1,9 @@
 #!/bin/bash
 
-echo ""
-echo "Lista de chaves em $HOME/.ssh:"
+ls -la $HOME/.ssh/*.pub
 
-echo ""
-ls -la $HOME/.ssh
+read -e -p "public key name (ex. id_${USER}_${HOSTNAME}.pub): " pub_key_name
 
-echo ""
-echo "Nome da chave pública (ex. cert_key.pub):" 
-read -e pub_cert_name
+read -e -p "remote server (ex. -p 22022 user@hostname): " remote_server
 
-echo ""
-echo "Servidor remoto (ex. -p 22022 usuario@servidor):"
-read -e remote_server
-
-echo ""
-ssh-copy-id -i $HOME/.ssh/$pub_cert_name $remote_server
+ssh-copy-id -i $HOME/.ssh/$pub_key_name $remote_server

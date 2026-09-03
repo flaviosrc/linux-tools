@@ -1,12 +1,12 @@
 #!/bin/bash
 
-set -e
+read -e -p "key name [id_${USER}_${HOSTNAME}]: " key_name
+key_name="${key_name:-id_${USER}_${HOSTNAME}}"
 
-echo ""
-echo "Nome do novo certificado (ex. cert_key):"
-read -e cert_name
+ssh-keygen -t ed25519 -f $HOME/.ssh/$key_name
 
-echo ""
-ssh-keygen -t ed25519 -f $HOME/.ssh/$cert_name
+read -e -p "add to ssh agent? (y/n):" add_to_agent
 
-chmod 600 $HOME/.ssh/$cert_name
+if [ "$add_to_agent" = "y" ]; then
+    ssh-add $HOME/.ssh/$key_name
+fi
