@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# curl http://ip-api.com/json/8.8.8.8
+
+curl http://ip-api.com/json/
