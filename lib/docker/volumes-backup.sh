@@ -25,7 +25,7 @@ _log_retention() {
 _log() {
     _lvl="$1"; shift
     _line="$(date '+%F %T') [${_lvl}] $*"
-    printf '%s\n' "$_line" | tee -a "$LOG_FILE" 2>/dev/null || true
+    printf "%s\n" "$_line" | tee -a "$LOG_FILE" 2>/dev/null || true
 }
 
 log_info() { _log INFO  "$@"; }
@@ -36,12 +36,12 @@ _log_init
 
 validate_args() {
     if [ ! -d "$WORKSPACE" ]; then
-        log_warn "[WARN] workspace: ${WORKSPACE} no found"
+        log_warn "workspace \"${WORKSPACE}\" not found"
         exit 1
     fi
 
     if [ ! -d "$BACKUP_STORAGE" ]; then
-        log_warn "[WARN] backup storage: ${BACKUP_STORAGE} no found"
+        log_warn "backup storage \"${BACKUP_STORAGE}\" not found"
         exit 1
     fi
 }
@@ -49,8 +49,7 @@ validate_args() {
 end_volumes_backup() {
     if [ ! -n $CURRENT_REPOSITORY ]; then
         log_info "restart ${CURRENT_REPOSITORY} services"
-        docker compose start || 
-        log_error "restarting ${CURRENT_REPOSITORY} services"
+        docker compose start || log_error "restarting ${CURRENT_REPOSITORY} services"
     fi
     log_info "end docker volumes backup routine"
 }
@@ -60,11 +59,9 @@ volume_backup() {
 
     log_info "init ${VOLUME} backup"
     docker run --rm \
-        --user "$(id -u):$(id -g)" \
         -v "$VOLUME":/data:ro \
         -v "$BACKUP_STORAGE":/backup \
-        alpine tar czf "/backup/${BACKUP_NAME}.tmp" -C /data . || { 
-          log_error "during ${VOLUME} backup"; exit 1; }
+        alpine tar czf "/backup/${BACKUP_NAME}.tmp" -C /data . || { log_error "during ${VOLUME} backup"; exit 1; }
 
     mv "${BACKUP_STORAGE}/${BACKUP_NAME}.tmp" "${BACKUP_STORAGE}/${BACKUP_NAME}"
 
@@ -104,8 +101,7 @@ for REPOSITORY in $(ls "$WORKSPACE"); do
     CURRENT_REPOSITORY=$REPOSITORY
 
     log_info "stop ${REPOSITORY} services"
-    docker compose stop --timeout 60 || { 
-      log_error "stopping ${REPOSITORY} services"; exit 1; }
+    docker compose stop --timeout 60 || { log_error "stopping ${REPOSITORY} services"; exit 1; }
 
     for VOLUME in $VOLUMES; do
         volume_backup
@@ -114,8 +110,7 @@ for REPOSITORY in $(ls "$WORKSPACE"); do
     CURRENT_REPOSITORY=""
 
     log_info "restart ${REPOSITORY} services"
-    docker compose start || { 
-      log_error "restarting ${REPOSITORY} services"; exit 1; }
+    docker compose start || { log_error "restarting ${REPOSITORY} services"; exit 1; }
 
     log_info "end ${REPOSITORY} volumes backup"
 done

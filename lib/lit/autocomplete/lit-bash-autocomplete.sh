@@ -1,15 +1,15 @@
 _lit_completion() {
-    local cur
-
-    cur="${COMP_WORDS[COMP_CWORD]}"
+    local cur="${COMP_WORDS[COMP_CWORD]}"
 
     local args=("${COMP_WORDS[@]:1:$((COMP_CWORD-1))}")
 
-    COMPREPLY=(
-        $(compgen -W "$(lit __complete "${args[@]}")" -- "$cur")
-    )
+    local opts="$(lit __complete "${args[@]}")"
 
-    # COMPREPLY=($(compgen -W "$(lit __complete)" -- "$cur"))
+    if [ -n "$opts" ]; then
+        COMPREPLY=($(compgen -W "$opts" -- "$cur"))
+    else
+        COMPREPLY=()
+    fi
 }
 
-complete -F _lit_completion lit lit-ro
+complete -o default -F _lit_completion lit lit-ro
