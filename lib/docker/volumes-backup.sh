@@ -47,7 +47,7 @@ validate_args() {
 }
 
 end_volumes_backup() {
-    if [ ! -n $CURRENT_REPOSITORY ]; then
+    if [ -n $CURRENT_REPOSITORY ]; then
         log_info "restart ${CURRENT_REPOSITORY} services"
         docker compose start || log_error "restarting ${CURRENT_REPOSITORY} services"
     fi
